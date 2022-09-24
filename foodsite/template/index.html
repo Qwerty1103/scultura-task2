@@ -236,27 +236,49 @@
         });
     }
 
+    function itemRemove(iID, qty) {
+        $.ajax({
+            type: "POST",
+            url: '/removeitem',
+            data: {
+                'iID': iID,
+                'qty': qty
+            },
+            success: function (data) {
+                console.log(data['ids'], data['qtys']);
+                updateCart(data['ids'], data['qtys']);
+            }
+        });
+    }
+
     $(document).ready(function () {
         $('.count1').prop('disabled', true);
-        let qty = 0
+        let qty1 = 0
+        let qty2 = 0
+        let qty3 = 0
+        let qty4 = 0
+        let qty5 = 0
+        $('.count1').val(qty1);
+        $('.count2').val(parseInt($('.count2').val()) + 1);
+        $('.count3').val(parseInt($('.count3').val()) + 1);
+        $('.count4').val(parseInt($('.count4').val()) + 1);
+        $('.count5').val(parseInt($('.count5').val()) + 1);
         $(document).on('click', '.plus1', function () {
             $('.count1').val(parseInt($('.count1').val()) + 1);
             let iID = 1;
-            qty = qty + 1;
-            itemAdd(iID, qty);
+            qty1 = qty1 + 1;
+            itemAdd(iID, qty1);
         });
         $(document).on('click', '.minus1', function () {
             $('.count1').val(parseInt($('.count1').val()) - 1);
-            a[0] = a[0] - 1;
-
-            if (a[0] < 1) {
-                a[0] = 0;
-            }
-            console.log(a[0])
+            let iID = 1;
+            qty1 = qty1 - 1;
+            if(qty1<0)
+                qty1 = 0
+            itemRemove(iID, qty1);
             if ($('.count1').val() < 0) {
                 $('.count1').val(0);
             }
-            updateCart();
         });
 
         $('.count2').prop('disabled', true);
@@ -347,34 +369,33 @@
     let updateCart = (id, qty) => {
 
         let detail = document.getElementById(id)
-        switch(id)
-        {
+        switch (id) {
             case '1':
-                if(qty>0)
+                if (qty > 0)
                     detail.innerHTML = "Double Decker"
                 else
                     detail.innerHTML = ""
                 break
             case 2:
-                if(qty!=0)
+                if (qty != 0)
                     detail.innerHTML = "Little Italy"
                 else
                     detail.innerHTML = ""
                 break
             case 3:
-                if(qty!=0)
+                if (qty != 0)
                     detail.innerHTML = "La Belle"
                 else
                     detail.innerHTML = ""
                 break
             case 4:
-                if(qty!=0)
+                if (qty != 0)
                     detail.innerHTML = "Go Canadian"
                 else
                     detail.innerHTML = ""
                 break
             case 5:
-                if(qty!=0)
+                if (qty != 0)
                     detail.innerHTML = "SMOKIN'67"
                 else
                     detail.innerHTML = ""
