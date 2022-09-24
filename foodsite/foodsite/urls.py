@@ -20,6 +20,5 @@ from foodsite import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.homePage),
-    path('setcart',views.setCart),  
-    path('getcart',views.getCart)
+    path('additem',views.addItem)
 ]

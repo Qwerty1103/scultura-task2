@@ -1,23 +1,19 @@
 from asyncio.windows_events import NULL
-from contextlib import nullcontext
-import string
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect,render
 
-def homePage(request, ids = 0, qtys = 0):
-    return render(request,"index.html", {'ids': ids, 'qtys': qtys})
+def homePage(request):
+    return render(request,"index.html")
 
 @csrf_exempt
-def setCart(request):
-    if request.method == "POST":
+def addItem(request):
+    if request.method == "GET":  
+        request.session['ids'] = 0
+        request.session['qtys'] = 0
+    elif request.method == "POST":
         request.session['ids'] = request.POST.get('iID')
-        request.session['qtys'] = request.POST.get('qty')
-    return getCart(request)
-
-def getCart(request):
+        request.session['qtys'] = request.session['qtys'] + 1
     ids = request.session['ids']
     qtys = request.session['qtys']
-    ids = 1
-    qtys = 1
-    return redirect('/', ids, qtys)
+    return JsonResponse({'ids': ids, 'qtys': qtys})

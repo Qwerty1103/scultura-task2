@@ -190,20 +190,19 @@
                 <div id="toolbar-and-content">
                     <div id="toolbar">PULL ME</div>
                     <div id="toolbar-content">
-                        <div id="dd">
-                            {{ids}}<br>
-                            {{qtys}}
-                        </div>
-                        <div id="li">
+                        <div id="1">
 
                         </div>
-                        <div id="lb">
+                        <div id="2">
 
                         </div>
-                        <div id="gc">
+                        <div id="3">
 
                         </div>
-                        <div id="ss">
+                        <div id="4">
+
+                        </div>
+                        <div id="5">
 
                         </div>
                     </div>
@@ -225,10 +224,14 @@
     function itemAdd(iID, qty) {
         $.ajax({
             type: "POST",
-            url: '/setcart',
+            url: '/additem',
             data: {
                 'iID': iID,
                 'qty': qty
+            },
+            success: function (data) {
+                console.log(data['ids'], data['qtys']);
+                updateCart(data['ids'], data['qtys']);
             }
         });
     }
@@ -341,31 +344,44 @@
         });
     });
 
-    let updateCart = () => {
+    let updateCart = (id, qty) => {
 
-        let dd = document.getElementById('dd');
-        if (a[0] != 0)
-            dd.innerHTML = "Double Decker"
-        else
-            dd.innerHTML = ""
-
-        let li = document.getElementById('li');
-        if (a[1] != 0)
-            li.innerHTML = "Little Italy"
-        else
-            li.innerHTML = ""
-
-        let lb = document.getElementById('lb');
-        if (a[2] != 0)
-            lb.innerHTML = "La Belle"
-        else
-            lb.innerHTML = ""
-
-        let gc = document.getElementById('gc');
-        if (a[3] != 0)
-            gc.innerHTML = "Go Canadian"
-        else
-            gc.innerHTML = ""
+        let detail = document.getElementById(id)
+        switch(id)
+        {
+            case '1':
+                if(qty>0)
+                    detail.innerHTML = "Double Decker"
+                else
+                    detail.innerHTML = ""
+                break
+            case 2:
+                if(qty!=0)
+                    detail.innerHTML = "Little Italy"
+                else
+                    detail.innerHTML = ""
+                break
+            case 3:
+                if(qty!=0)
+                    detail.innerHTML = "La Belle"
+                else
+                    detail.innerHTML = ""
+                break
+            case 4:
+                if(qty!=0)
+                    detail.innerHTML = "Go Canadian"
+                else
+                    detail.innerHTML = ""
+                break
+            case 5:
+                if(qty!=0)
+                    detail.innerHTML = "SMOKIN'67"
+                else
+                    detail.innerHTML = ""
+                break
+            default:
+                console.log("Error")
+        }
     }
 
 </script>
