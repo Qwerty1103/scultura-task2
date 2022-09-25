@@ -1,40 +1,33 @@
 from asyncio.windows_events import NULL
 from mimetypes import init
+import re
+from turtle import home
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect,render
 
-def init(request):    
-    request.session['ids'] = [0,0,0,0,0]
-    request.session['qtys'] = [0,0,0,0,0]
-    return redirect(homePage)
+id = [-1,-1,-1,-1,-1]
+qty = [0,0,0,0,0]
 
-def homePage(request):
-    return render(request,"index.html", {'qty': request.session['qtys']})
+def homePage(request, ids, qtys):
+    return render(request,"index.html", {'id': ids, 'qty': qtys})
 
 @csrf_exempt
-def addItem(request):
+def updateItem(request):
+    global id
+    global qty
     if request.method == "POST":
-        if request.POST.get('iID') not in request.session['ids']:
-            request.session['ids'][int(request.POST.get('iID'))] = request.POST.get('iID')
-        if request.POST.get('iID') in request.session['ids']:
-            request.session['qtys'][int(request.POST.get('iID'))] = int(request.POST.get('qty'))
-    ids = request.session['ids']
-    qtys = request.session['qtys']
-    print(ids, qtys)
-    return JsonResponse({'ids': ids, 'qtys': qtys})
+        if id[int(request.POST.get('iID'))] != int(request.POST.get('iID')):
+            id[int(request.POST.get('iID'))] = int(request.POST.get('iID'))
+        if id[int(request.POST.get('iID'))] == int(request.POST.get('iID')):
+            qty[int(request.POST.get('iID'))] = int(request.POST.get('qty'))
+        if qty[int(request.POST.get('iID'))] == 0:
+            id[int(request.POST.get('iID'))] = -1
+        print(id,qty)
+        return JsonResponse({'ids': id, 'qtys': qty})
+    if request.method == "GET": 
+        return init(request, id, qty)
 
-@csrf_exempt
-def removeItem(request):
-    if request.method == "POST":
-        if request.POST.get('iID') not in request.session['ids']:
-            request.session['qtys'][int(request.POST.get('iID'))] = 0
-        if int(request.session['qtys'][int(request.POST.get('iID'))]) > 0:
-            request.session['qtys'][int(request.POST.get('iID'))] = int(request.session['qtys'][int(request.POST.get('iID'))]) - 1
-        else:
-            request.session['ids'][int(request.POST.get('iID'))] = 0
-            request.session['qtys'][int(request.POST.get('iID'))] = 0
-    ids = request.session['ids']
-    qtys = request.session['qtys']
-    print(ids, qtys)
-    return JsonResponse({'ids': ids, 'qtys': qtys})
+def init(request, id, qty):
+    print(id,qty)
+    return homePage(request, id, qty)

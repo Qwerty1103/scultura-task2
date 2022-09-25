@@ -190,6 +190,9 @@
                 <div id="toolbar-and-content">
                     <div id="toolbar">PULL ME</div>
                     <div id="toolbar-content">
+                        <div id="0">
+
+                        </div>
                         <div id="1">
 
                         </div>
@@ -200,9 +203,6 @@
 
                         </div>
                         <div id="4">
-
-                        </div>
-                        <div id="5">
 
                         </div>
                     </div>
@@ -218,34 +218,31 @@
         crossorigin="anonymous"></script>
 </body>
 <script>
+    let qty0 = 0
+    let qty1 = 0
+    let qty2 = 0
+    let qty3 = 0
+    let qty4 = 0
+    let iID0 = 0
+    let iID1 = 1
+    let iID2 = 2
+    let iID3 = 3
+    let iID4 = 4
 
-    a = [0, 0, 0, 0, 0];
-
-    function itemAdd(iID, qty) {
+    function updateItem(iID, qty) {
         $.ajax({
             type: "POST",
-            url: '/additem',
+            url: '/',
             data: {
                 'iID': iID,
                 'qty': qty
             },
             success: function (data) {
-                console.log(data['ids'], data['qtys']);
-                updateCart(data['ids'], data['qtys']);
-            }
-        });
-    }
-
-    function itemRemove(iID, qty) {
-        $.ajax({
-            type: "POST",
-            url: '/removeitem',
-            data: {
-                'iID': iID,
-                'qty': qty
-            },
-            success: function (data) {
-                console.log(data['ids'], data['qtys']);
+                qty0 = data['qtys'][0];
+                qty1 = data['qtys'][1];
+                qty2 = data['qtys'][2];
+                qty3 = data['qtys'][3];
+                qty4 = data['qtys'][4];
                 updateCart(data['ids'], data['qtys']);
             }
         });
@@ -253,29 +250,39 @@
 
     $(document).ready(function () {
         $('.count1').prop('disabled', true);
-        let qty1 = 0
-        let qty2 = 0
-        let qty3 = 0
-        let qty4 = 0
-        let qty5 = 0
-        $('.count1').val(qty1);
-        $('.count2').val(parseInt($('.count2').val()) + 1);
-        $('.count3').val(parseInt($('.count3').val()) + 1);
-        $('.count4').val(parseInt($('.count4').val()) + 1);
-        $('.count5').val(parseInt($('.count5').val()) + 1);
+        if ('{{qty.0}}' > 0) {
+            qty0 = Number('{{qty.0}}')
+            $('.count1').val('{{qty.0}}');
+        }
+        if ('{{qty.1}}' > 0) {
+            qty1 = Number('{{qty.1}}')
+            $('.count2').val('{{qty.1}}');
+        }
+        if ('{{qty.2}}' > 0) {
+            qty2 = Number('{{qty.2}}')
+            $('.count3').val('{{qty.2}}');
+        }
+        if ('{{qty.3}}' > 0) {
+            qty3 = Number('{{qty.3}}')
+            $('.count4').val('{{qty.3}}');
+        }
+        if ('{{qty.4}}' > 0) {
+            qty4 = Number('{{qty.4}}')
+            $('.count5').val('{{qty.4}}');
+        }
         $(document).on('click', '.plus1', function () {
             $('.count1').val(parseInt($('.count1').val()) + 1);
-            let iID = 1;
-            qty1 = qty1 + 1;
-            itemAdd(iID, qty1);
+            iID0 = 0;
+            qty0 = qty0 + 1;
+            updateItem(iID0, qty0);
         });
         $(document).on('click', '.minus1', function () {
             $('.count1').val(parseInt($('.count1').val()) - 1);
-            let iID = 1;
-            qty1 = qty1 - 1;
-            if(qty1<0)
-                qty1 = 0
-            itemRemove(iID, qty1);
+            iID0 = 0;
+            qty0 = qty0 - 1;
+            if (qty0 < 0)
+                qty0 = 0
+            updateItem(iID0, qty0);
             if ($('.count1').val() < 0) {
                 $('.count1').val(0);
             }
@@ -284,85 +291,77 @@
         $('.count2').prop('disabled', true);
         $(document).on('click', '.plus2', function () {
             $('.count2').val(parseInt($('.count2').val()) + 1);
-            a[1] = a[1] + 1;
-            console.log(a[1])
-            updateCart();
+            iID1 = 1;
+            qty1 = qty1 + 1;
+            updateItem(iID1, qty1);
         });
         $(document).on('click', '.minus2', function () {
             $('.count2').val(parseInt($('.count2').val()) - 1);
-            a[1] = a[1] - 1;
-
-            if (a[1] < 1) {
-                a[1] = 0;
-            }
-            console.log(a[1])
+            iID1 = 1;
+            qty1 = qty1 - 1;
+            if (qty1 < 0)
+                qty1 = 0
+            updateItem(iID1, qty1);
             if ($('.count2').val() < 0) {
                 $('.count2').val(0);
             }
-            updateCart();
         });
 
         $('.count3').prop('disabled', true);
         $(document).on('click', '.plus3', function () {
             $('.count3').val(parseInt($('.count3').val()) + 1);
-            a[2] = a[2] + 1;
-            console.log(a[2])
-            updateCart();
+            iID2 = 2;
+            qty2 = qty2 + 1;
+            updateItem(iID2, qty2);
         });
         $(document).on('click', '.minus3', function () {
             $('.count3').val(parseInt($('.count3').val()) - 1);
-            a[2] = a[2] - 1;
-
-            if (a[2] < 1) {
-                a[2] = 0;
-            }
-            console.log(a[2])
+            iID2 = 2;
+            qty2 = qty2 - 1;
+            if (qty2 < 0)
+                qty2 = 0
+            updateItem(iID2, qty2);
             if ($('.count3').val() < 0) {
                 $('.count3').val(0);
             }
-            updateCart();
         });
 
         $('.count4').prop('disabled', true);
         $(document).on('click', '.plus4', function () {
             $('.count4').val(parseInt($('.count4').val()) + 1);
-            a[3] = a[3] + 1;
-            console.log(a[3])
-            updateCart();
+            iID3 = 3;
+            qty3 = qty3 + 1;
+            updateItem(iID3, qty3);
         });
         $(document).on('click', '.minus4', function () {
             $('.count4').val(parseInt($('.count4').val()) - 1);
-            a[3] = a[3] - 1;
-
-            if (a[3] < 1) {
-                a[3] = 0;
-            }
-            console.log(a[3])
+            iID3 = 3;
+            qty3 = qty3 - 1;
+            if (qty3 < 0)
+                qty3 = 0
+            updateItem(iID3, qty3);
             if ($('.count4').val() < 0) {
                 $('.count4').val(0);
             }
-            updateCart();
         });
 
         $('.count5').prop('disabled', true);
         $(document).on('click', '.plus5', function () {
             $('.count5').val(parseInt($('.count5').val()) + 1);
-            a[4] = a[4] + 1;
-            console.log(a[4])
-            updateCart();
+            iID4 = 4;
+            qty4 = qty4 + 1;
+            updateItem(iID4, qty4);
         });
         $(document).on('click', '.minus5', function () {
             $('.count5').val(parseInt($('.count5').val()) - 1);
-            a[4] = a[4] - 1;
-
-            if (a[4] < 1) {
-                a[4] = 0;
-            }
-            console.log(a[4])
+            iID4 = 3;
+            qty4 = qty4 - 1;
+            if (qty4 < 0)
+                qty4 = 0
+            updateItem(iID4, qty4);
             if ($('.count5').val() < 0) {
                 $('.count5').val(1);
             }
-            updateCart();
         });
     });
 
