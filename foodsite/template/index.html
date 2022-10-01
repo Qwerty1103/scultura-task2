@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/index.css">
+    <link rel="stylesheet" href="../static/index.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
@@ -190,28 +190,6 @@
                 <div id="toolbar-and-content">
                     <div id="toolbar">PULL ME</div>
                     <div id="toolbar-content">
-                        <div id = "itm1" class="cartItem">
-                            <div>
-                                Go Canadian
-                            </div>
-                            <div>
-                                X 2
-                            </div>
-                            <div>
-                                840
-                            </div>
-                        </div>
-                        <div id = "itm2" class="cartItem">
-                            <div>
-                                La belle
-                            </div>
-                            <div>
-                                X 1
-                            </div>
-                            <div>
-                                420
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -360,6 +338,7 @@
     let updateCart = async () => 
     {
         let pizzas = ["Double Decker", "Little Italy", "La Belle", "Go Canadian", "Smokin’67"]
+        let cost = [420, 420, 420, 420, 420]
         for(i = 0; i<qtyArray.length; i++)
         {
                     if (qtyArray[i] > 0)
@@ -368,9 +347,30 @@
                         {
                             var div = document.createElement(`item${i}`);
                             div.id = `item${i}`
-                            div.class = "cartItem"
-                            div.innerHTML = pizzas[i];
+                            div.className = "cartItem"
+                            var name = document.createElement("name")
+                            name.className = "itemName"
+                            name.id = `id${i}`
+                            name.innerHTML = pizzas[i];
+                            var qt = document.createElement("qt")
+                            qt.className = "qt"
+                            qt.id = `qt${i}`
+                            qt.innerHTML = `X ${qtyArray[i]}`;
+                            var price = document.createElement("price")
+                            price.className = "price"
+                            price.id = `price${i}`
+                            price.innerHTML = (qtyArray[i] * cost[i]);
+                            div.appendChild(name)
+                            div.appendChild(qt)
+                            div.appendChild(price)
                             document.getElementById("toolbar-content").appendChild(div);
+                        }
+                        else if(document.getElementById(`item${i}`) != null)
+                        {
+                            var qt = document.getElementById(`qt${i}`)
+                            qt.innerHTML = `X ${qtyArray[i]}`;
+                            var price = document.getElementById(`price${i}`)
+                            price.innerHTML = (qtyArray[i] * cost[i]);
                         }
                     }
                     else if(qtyArray[i] <= 0)

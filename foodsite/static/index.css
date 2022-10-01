@@ -194,6 +194,21 @@ body {
     .cartItem
     {
         display: flex;
-        gap: 25vw;
+        justify-content: space-between;
+    }
+
+    .itemName
+    {
+        width: 60%;
+    }
+
+    .qt
+    {
+        width: 20%;
+    }
+
+    .price
+    {
+        width: 20%;
     }
 }
