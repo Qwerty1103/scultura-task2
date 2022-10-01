@@ -19,8 +19,7 @@ from foodsite import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.init),
-    path('home',views.homePage),
-    path('additem',views.addItem),
-    path('removeitem',views.removeItem)
+    path('',views.homePage),
+    path('update',views.updateItem),
+    path('reset',views.reset)
 ]
