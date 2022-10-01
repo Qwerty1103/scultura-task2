@@ -1,6 +1,4 @@
 from asyncio.windows_events import NULL
-from mimetypes import init
-from turtle import home
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect, render
@@ -27,8 +25,6 @@ def updateItem(request):
             cart.append(data)
             request.session['cart'] = cart
         print(cart)
-    if request.method == "GET":
-        return init(request, cart)
     return JsonResponse({'cart': cart})
 
 def homePage(request):
