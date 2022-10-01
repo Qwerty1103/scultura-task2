@@ -190,20 +190,27 @@
                 <div id="toolbar-and-content">
                     <div id="toolbar">PULL ME</div>
                     <div id="toolbar-content">
-                        <div id="0">
-
+                        <div id = "itm1" class="cartItem">
+                            <div>
+                                Go Canadian
+                            </div>
+                            <div>
+                                X 2
+                            </div>
+                            <div>
+                                840
+                            </div>
                         </div>
-                        <div id="1">
-
-                        </div>
-                        <div id="2">
-
-                        </div>
-                        <div id="3">
-
-                        </div>
-                        <div id="4">
-
+                        <div id = "itm2" class="cartItem">
+                            <div>
+                                La belle
+                            </div>
+                            <div>
+                                X 1
+                            </div>
+                            <div>
+                                420
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -218,19 +225,10 @@
         crossorigin="anonymous"></script>
 </body>
 <script>
-    let qty0 = 0
-    let qty1 = 0
-    let qty2 = 0
-    let qty3 = 0
-    let qty4 = 0
-    let iID0 = 0
-    let iID1 = 1
-    let iID2 = 2
-    let iID3 = 3
-    let iID4 = 4
+    var qtyArray = [0,0,0,0,0];
 
-    function updateItem(iID, qty) {
-        $.ajax({
+    async function updateItem(iID, qty) {
+        await $.ajax({
             type: "POST",
             url: '/update',
             data: {
@@ -239,156 +237,150 @@
             },
             success: function (data) {
                 for (i = 0; i < data['cart'].length; i++) {
-                    console.log(data['cart'][i])
+                    qtyArray[i] = data['cart'][i]['qty']
                 }
-                // updateCart(data['ids'], data['qtys']);
+                updateCart();
             }
         });
     }
 
-    $(document).ready(function () {
+    $(document).ready(async function () {
+        
+        await $.ajax({
+                type: "POST",
+                url: '/',
+                success: function (data) {
+                    for (i = 0; i < data['cart'].length; i++) {
+                        qtyArray[i] = data['cart'][i]['qty']
+                    }
+                    updateCart();
+                }
+        });
+
         $('.count1').prop('disabled', true);
-        let qty1 = 0
-        let qty2 = 0
-        let qty3 = 0
-        let qty4 = 0
-        let qty5 = 0
-        $('.count1').val(qty1);
-        $('.count2').val(qty2);
-        $('.count3').val(qty3);
-        $('.count4').val(qty4);
-        $('.count5').val(qty5);
+        $('.count1').val(null ? 0 : qtyArray[0]);
+        $('.count2').val(null ? 0 : qtyArray[1]);
+        $('.count3').val(null ? 0 : qtyArray[2]);
+        $('.count4').val(null ? 0 : qtyArray[3]);
+        $('.count5').val(null ? 0 : qtyArray[4]);
         $(document).on('click', '.plus1', function () {
             $('.count1').val(parseInt($('.count1').val()) + 1);
             let iID = 1;
-            qty1 = qty1 + 1;
-            updateItem(iID, qty1);
+            qtyArray[0] = Number(qtyArray[0]) + 1;
+            updateItem(iID, qtyArray[0]);
         });
         $(document).on('click', '.minus1', function () {
             $('.count1').val(parseInt($('.count1').val()) - 1);
             let iID = 1;
-            qty1 = qty1 - 1;
-            if (qty1 < 0)
-                qty1 = 0
+            qtyArray[0] = Number(qtyArray[0]) - 1;
+            if (qtyArray[0] < 0)
+                qtyArray[0] = 0
             if ($('.count1').val() < 0) {
                 $('.count1').val(0);
             }
-            updateItem(iID, qty1);
+            updateItem(iID, qtyArray[0]);
         });
 
         $('.count2').prop('disabled', true);
         $(document).on('click', '.plus2', function () {
             $('.count2').val(parseInt($('.count2').val()) + 1);
             let iID = 2;
-            qty2 = qty2 + 1;
-            updateItem(iID, qty2);
+            qtyArray[1] = Number(qtyArray[1]) + 1;
+            updateItem(iID, qtyArray[1]);
         });
         $(document).on('click', '.minus2', function () {
             $('.count2').val(parseInt($('.count2').val()) - 1);
             let iID = 2;
-            qty2 = qty2 - 1;
-            if (qty2 < 0)
-                qty2 = 0
-            if ($('.count1').val() < 0) {
-                $('.count1').val(0);
+            qtyArray[1] = Number(qtyArray[1]) - 1;
+            if (qtyArray[1] < 0)
+                qtyArray[1] = 0
+            if ($('.count2').val() < 0) {
+                $('.count2').val(0);
             }
-            updateItem(iID, qty2);
+            updateItem(iID, qtyArray[1]);
         });
 
         $('.count3').prop('disabled', true);
         $(document).on('click', '.plus3', function () {
             $('.count3').val(parseInt($('.count3').val()) + 1);
             let iID = 3;
-            qty3 = qty3 + 1;
-            updateItem(iID, qty3);
+            qtyArray[2] = Number(qtyArray[2]) + 1;
+            updateItem(iID, qtyArray[2]);
         });
         $(document).on('click', '.minus3', function () {
             $('.count3').val(parseInt($('.count3').val()) - 1);
             let iID = 3;
-            qty3 = qty3 - 1;
-            if (qty3 < 0)
-                qty3 = 0
-            if ($('.count1').val() < 0) {
-                $('.count1').val(0);
+            qtyArray[2] = Number(qtyArray[2]) - 1;
+            if (qtyArray[2] < 0)
+                qtyArray[2] = 0
+            if ($('.count3').val() < 0) {
+                $('.count3').val(0);
             }
-            updateItem(iID, qty3);
+            updateItem(iID, qtyArray[2]);
         });
 
         $('.count4').prop('disabled', true);
         $(document).on('click', '.plus4', function () {
             $('.count4').val(parseInt($('.count4').val()) + 1);
             let iID = 4;
-            qty4 = qty4 + 1;
-            updateItem(iID, qty4);
+            qtyArray[3] = Number(qtyArray[3]) + 1;
+            updateItem(iID, qtyArray[3]);
         });
         $(document).on('click', '.minus4', function () {
             $('.count4').val(parseInt($('.count4').val()) - 1);
             let iID = 4;
-            qty4 = qty4 - 1;
-            if (qty4 < 0)
-                qty4 = 0
-            if ($('.count1').val() < 0) {
-                $('.count1').val(0);
+            qtyArray[3] = Number(qtyArray[3]) - 1;
+            if (qtyArray[3] < 0)
+                qtyArray[3] = 0
+            if ($('.count4').val() < 0) {
+                $('.count4').val(0);
             }
-            updateItem(iID, qty1);
+            updateItem(iID, qtyArray[3]);
         });
 
         $('.count5').prop('disabled', true);
         $(document).on('click', '.plus5', function () {
             $('.count5').val(parseInt($('.count5').val()) + 1);
             let iID = 5;
-            qty5 = qty5 + 1;
-            updateItem(iID, qty5);
+            qtyArray[4] = Number(qtyArray[4]) + 1;
+            updateItem(iID, qtyArray[4]);
         });
         $(document).on('click', '.minus5', function () {
             $('.count5').val(parseInt($('.count5').val()) - 1);
             let iID = 5;
-            qty5 = qty5 - 1;
-            if (qty5 < 0)
-                qty5 = 0
-            if ($('.count1').val() < 0) {
-                $('.count1').val(0);
+            qtyArray[4] = Number(qtyArray[4]) - 1;
+            if (qtyArray[4] < 0)
+                qtyArray[4] = 0
+            if ($('.count4').val() < 0) {
+                $('.count4').val(0);
             }
-            updateItem(iID, qty1);
+            updateItem(iID, qtyArray[4]);
         });
     });
-
-    let updateCart = (id, qty) => {
-
-        let detail = document.getElementById(id)
-        switch (id) {
-            case '1':
-                if (qty > 0)
-                    detail.innerHTML = "Double Decker"
-                else
-                    detail.innerHTML = ""
-                break
-            case 2:
-                if (qty != 0)
-                    detail.innerHTML = "Little Italy"
-                else
-                    detail.innerHTML = ""
-                break
-            case 3:
-                if (qty != 0)
-                    detail.innerHTML = "La Belle"
-                else
-                    detail.innerHTML = ""
-                break
-            case 4:
-                if (qty != 0)
-                    detail.innerHTML = "Go Canadian"
-                else
-                    detail.innerHTML = ""
-                break
-            case 5:
-                if (qty != 0)
-                    detail.innerHTML = "SMOKIN'67"
-                else
-                    detail.innerHTML = ""
-                break
-            default:
-                console.log("Error")
+    let updateCart = async () => 
+    {
+        let pizzas = ["Double Decker", "Little Italy", "La Belle", "Go Canadian", "Smokin’67"]
+        for(i = 0; i<qtyArray.length; i++)
+        {
+                    if (qtyArray[i] > 0)
+                    {
+                        if(document.getElementById(`item${i}`) == null)
+                        {
+                            var div = document.createElement(`item${i}`);
+                            div.id = `item${i}`
+                            div.class = "cartItem"
+                            div.innerHTML = pizzas[i];
+                            document.getElementById("toolbar-content").appendChild(div);
+                        }
+                    }
+                    else if(qtyArray[i] <= 0)
+                    {
+                        if(document.getElementById(`item${i}`) != null)
+                        {
+                            var del = await document.getElementById(`item${i}`)
+                            del.remove()
+                        }
+                    }
         }
     }
 

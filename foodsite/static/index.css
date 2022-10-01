@@ -190,4 +190,10 @@ body {
     .section3 {
         margin-top: 50vh;
     }
+
+    .cartItem
+    {
+        display: flex;
+        gap: 25vw;
+    }
 }
